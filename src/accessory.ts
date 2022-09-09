@@ -5,93 +5,86 @@ import {
   CharacteristicEventTypes,
   CharacteristicGetCallback,
   CharacteristicSetCallback,
+  Characteristic,
   CharacteristicValue,
-  HAP,
-  Logging,
-  Service
-} from "homebridge";
+  Logger,
+  Service,
+} from 'homebridge';
 
-/*
- * IMPORTANT NOTICE
- *
- * One thing you need to take care of is, that you never ever ever import anything directly from the "homebridge" module (or the "hap-nodejs" module).
- * The above import block may seem like, that we do exactly that, but actually those imports are only used for types and interfaces
- * and will disappear once the code is compiled to Javascript.
- * In fact you can check that by running `npm run build` and opening the compiled Javascript file in the `dist` folder.
- * You will notice that the file does not contain a `... = require("homebridge");` statement anywhere in the code.
- *
- * The contents of the above import statement MUST ONLY be used for type annotation or accessing things like CONST ENUMS,
- * which is a special case as they get replaced by the actual value and do not remain as a reference in the compiled code.
- * Meaning normal enums are bad, const enums can be used.
- *
- * You MUST NOT import anything else which remains as a reference in the code, as this will result in
- * a `... = require("homebridge");` to be compiled into the final Javascript code.
- * This typically leads to unexpected behavior at runtime, as in many cases it won't be able to find the module
- * or will import another instance of homebridge causing collisions.
- *
- * To mitigate this the {@link API | Homebridge API} exposes the whole suite of HAP-NodeJS inside the `hap` property
- * of the api object, which can be acquired for example in the initializer function. This reference can be stored
- * like this for example and used to access all exported variables and classes from HAP-NodeJS.
- */
-let hap: HAP;
+import { Control } from 'magic-home';
 
 /*
  * Initializer function called when the plugin is loaded.
  */
-export = (api: API) => {
-  hap = api.hap;
-  api.registerAccessory("ExampleSwitch", ExampleSwitch);
-};
 
-class ExampleSwitch implements AccessoryPlugin {
+export class MagicHomeAccessory implements AccessoryPlugin {
+  public readonly Service: typeof Service = this.api.hap.Service;
+  public readonly Characteristic: typeof Characteristic = this.api.hap.Characteristic;
+  MagicHome: Control;
 
-  private readonly log: Logging;
-  private readonly name: string;
-  private switchOn = false;
-
-  private readonly switchService: Service;
-  private readonly informationService: Service;
-
-  constructor(log: Logging, config: AccessoryConfig, api: API) {
+  constructor(
+    public readonly log: Logger,
+    public readonly config: AccessoryConfig,
+    public readonly api: API,
+  ) {
     this.log = log;
-    this.name = config.name;
+    this.config = config;
+    this.api = api;
 
-    this.switchService = new hap.Service.Switch(this.name);
-    this.switchService.getCharacteristic(hap.Characteristic.On)
-      .on(CharacteristicEventTypes.GET, (callback: CharacteristicGetCallback) => {
-        log.info("Current state of the switch was returned: " + (this.switchOn? "ON": "OFF"));
-        callback(undefined, this.switchOn);
-      })
-      .on(CharacteristicEventTypes.SET, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
-        this.switchOn = value as boolean;
-        log.info("Switch state was set to: " + (this.switchOn? "ON": "OFF"));
-        callback();
-      });
+    this.MagicHome = new Control(this.config.ip, {
+      apply_masks: this.config.apply_masks || false,
+      command_timeout: this.config.timeout || 1000,
+    });
 
-    this.informationService = new hap.Service.AccessoryInformation()
-      .setCharacteristic(hap.Characteristic.Manufacturer, "Custom Manufacturer")
-      .setCharacteristic(hap.Characteristic.Model, "Custom Model");
-
-    log.info("Switch finished initializing!");
+    this.log.debug('MagicHomePlugin finished initializing!');
+    this.log.debug('IP: ' + this.config.ip);
+    this.log.debug('Timeout: ' + this.config.timeout);
+    this.log.debug('Apply Masks: ' + this.config.apply_masks);
   }
 
-  /*
-   * This method is optional to implement. It is called when HomeKit ask to identify the accessory.
-   * Typical this only ever happens at the pairing process.
-   */
   identify(): void {
-    this.log("Identify!");
+    this.log.info('Identify!');
   }
 
-  /*
-   * This method is called directly after creation of this instance.
-   * It should return all services which should be added to the accessory.
-   */
   getServices(): Service[] {
-    return [
-      this.informationService,
-      this.switchService,
-    ];
+    const informationService = new this.Service.AccessoryInformation();
+
+    informationService
+      .setCharacteristic(this.Characteristic.Manufacturer, 'MagicHome')
+      .setCharacteristic(this.Characteristic.Model, 'LED Controller')
+      .setCharacteristic(this.Characteristic.SerialNumber, '123-456-789');
+
+    const lightbulbService = new this.Service.Lightbulb(this.config.name);
+
+    lightbulbService
+      .getCharacteristic(this.Characteristic.On)
+      .on(CharacteristicEventTypes.GET, this.getPowerState.bind(this))
+      .on(CharacteristicEventTypes.SET, this.setPowerState.bind(this));
+
+    return [informationService, lightbulbService];
   }
 
+  getPowerState(callback: CharacteristicGetCallback) {
+    this.log.debug('Get Power State');
+    this.MagicHome.queryState().then((state) => {
+      const isOn = this.powerState(state.on);
+      this.log.debug('Power State is currently: ' + isOn);
+      callback(null, state.on);
+    }).catch((error) => {
+      this.log.error('Error getting power state: ' + error);
+    });
+  }
+
+  setPowerState(value: CharacteristicValue, callback: CharacteristicSetCallback) {
+    this.log.debug('Set Power State to: ' + this.powerState(value as boolean));
+    this.MagicHome.setPower(value as boolean).then(() => {
+      callback(null);
+    }).catch((error) => {
+      callback(error);
+    });
+  }
+
+  private powerState(state: boolean): string {
+    return state ? 'On' : 'Off';
+  }
 }
