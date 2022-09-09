@@ -1,9 +1,9 @@
 {
-  "private": true,
+  "private": false,
   "displayName": "MagicHomeAccessory",
   "name": "homebridge-magichome-accessory",
-  "version": "1.0.0",
-  "description": "A short description about what your plugin does.",
+  "version": "0.0.1",
+  "description": "Plugin for Homebridge to control MagicHome devices",
   "license": "Apache-2.0",
   "author": {
     "name": "Lukas Pistrol",
@@ -11,10 +11,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/USERNAME/GITHUB_PROJECT_NAME.git"
+    "url": "https://github.com/lukepistrol/homebridge-magichome-accessory"
   },
   "bugs": {
-    "url": "https://github.com/USERNAME/GITHUB_PROJECT_NAME/issues"
+    "url": "https://github.com/lukepistrol/homebridge-magichome-accessory/issues"
   },
   "engines": {
     "node": ">=14.18.1",
