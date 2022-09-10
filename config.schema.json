@@ -40,6 +40,20 @@
         "title": "Command Timeout",
         "description": "Timeout in milliseconds",
         "default": 100
+      },
+      "enabled_characteristics": {
+        "type": "array",
+        "title": "Enabled Characteristics",
+        "description": "Characteristics to enable",
+        "uniqueItems": true,
+        "items": {
+          "type": "string",
+          "title": "Characteristic",
+          "enum": [
+            "On",
+            "Brightness"
+          ]
+        }
       }
     }
   }

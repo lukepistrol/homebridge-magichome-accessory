@@ -1,8 +1,8 @@
 import { API } from 'homebridge';
 
-import { ACESSORY_NAME } from './settings';
-import { MagicHomeAccessory } from './accessory';
+import { ACCESSORY_NAME } from './settings';
+import { MagicHomeAccessory } from './MagicHomeAccessory';
 
 export = (api: API) => {
-  api.registerAccessory(ACESSORY_NAME, MagicHomeAccessory);
+  api.registerAccessory(ACCESSORY_NAME, MagicHomeAccessory);
 };

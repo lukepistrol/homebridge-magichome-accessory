@@ -22,12 +22,12 @@
   },
   "main": "dist/index.js",
   "scripts": {
-    "lint": "eslint src/**.ts --max-warnings=0",
+    "lint": "eslint '**/*.ts' && npx prettier --check '**/*.ts' --parser typescript",
+    "lint:fix": "eslint '**/*.ts' --fix && npx prettier --write '**/*.ts' --parser typescript",
     "watch": "npm run build && npm link && nodemon",
     "build": "npm run clean && tsc",
     "prepublishOnly": "npm run lint && npm run build",
-    "clean": "rimraf ./dist",
-    "prettier-format": "prettier --config .prettierrc 'src/**/*.{ts,js}' --write"
+    "clean": "rimraf ./dist"
   },
   "keywords": [
     "homebridge-plugin"
@@ -41,6 +41,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "homebridge": "^1.3.5",
+    "homebridge-config-ui-x": "^4.41.2",
     "nodemon": "^2.0.13",
     "prettier": "^2.7.1",
     "rimraf": "^3.0.2",

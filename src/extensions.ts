@@ -16,3 +16,12 @@ Number.prototype.convertToColor = function (max: number) {
 Number.prototype.clamp = function (min: number, max: number) {
   return Math.min(Math.max(Number(this), min), max);
 };
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+interface Boolean {
+  onOff(): string;
+}
+
+Boolean.prototype.onOff = function () {
+  return this ? 'On' : 'Off';
+};
