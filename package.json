@@ -2,7 +2,7 @@
   "private": false,
   "displayName": "MagicHomeAccessory",
   "name": "homebridge-magichome-accessory",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Plugin for Homebridge to control MagicHome devices",
   "license": "Apache-2.0",
   "author": {
@@ -32,9 +32,7 @@
   "keywords": [
     "homebridge-plugin"
   ],
-  "dependencies": {
-    "magic-home": "2.9.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/node": "^16.10.9",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
