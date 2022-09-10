@@ -1,7 +1,7 @@
 {
   "pluginAlias": "MagicHomeAccessory",
   "pluginType": "accessory",
-  "singular": true,
+  "singular": false,
   "schema": {
     "type": "object",
     "properties": {
