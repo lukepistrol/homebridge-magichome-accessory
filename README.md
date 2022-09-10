@@ -17,3 +17,9 @@ This plugin allows MagicHome single channel devices to be switched on/off and to
     },
 ],
 ```
+
+## Supported Devices
+
+At this time only single channel/color controllers are supported like this one:
+
+![Single Channel](./.docs/single-channel.jpeg)
