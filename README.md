@@ -13,7 +13,11 @@ This plugin allows MagicHome single channel devices to be switched on/off and to
       "port": 5577, // (optional, Default: 5577)
       "connect_timeout": 1000, // (optional, Default: 1000)
       "response_timeout": 500, // (optional, Default: 500)
-      "command_timeout": 100 // (optional, Default: 100)
+      "command_timeout": 100, // (optional, Default: 100)
+      "enabled_characteristics": [
+        "On", // Enables On/Off function
+        "Brightness" // Enables Dim funcion
+      ],
     },
 ],
 ```
