@@ -10,17 +10,32 @@ This plugin allows MagicHome single channel devices to be switched on/off and to
       "accessory": "MagicHomeAccessory",
       "name": "LED Strip",
       "ip": "<The local IP address>",
-      "port": 5577, // (optional, Default: 5577)
-      "connect_timeout": 1000, // (optional, Default: 1000)
-      "response_timeout": 500, // (optional, Default: 500)
-      "command_timeout": 100, // (optional, Default: 100)
+      "port": 5577,
+      "connect_timeout": 1000,
+      "response_timeout": 500,
+      "command_timeout": 100,
       "enabled_characteristics": [
-        "On", // Enables On/Off function
-        "Brightness" // Enables Dim funcion
+        "On",
+        "Brightness"
       ],
     },
 ],
 ```
+
+### Properties
+
+| Property                   | Description                                                                               | Default Value            |
+| -------------------------- | ----------------------------------------------------------------------------------------- | ------------------------ |
+| accessory *                | The plugins's name.                                                                       | `"MagicHomeAccessory"`   |
+| name *                     | The readable name of the acessory.                                                        | `"MagicHome"`            |
+| ip *                       | The local IP address (eg.: `192.168.0.48`).                                               | _empty_                  |
+| port *                     | The port. This is usually `5577`.                                                         | `5577`                   |
+| connect_timeout            | The time in `ms` after which the connection is beeing aborted without data sent/received. | `1000`                   |
+| response_timeout           | The time in `ms` to wait for a response from the device.                                  | `500`                    |
+| command_timeout            | The time in `ms` until a command is invalid.                                              | `100`                    |
+| eneabled_characteristics * | Array of enabled characteristics for the device. (`"On"`\|`"Brightness"`)                 | [`"On"`, `"Brightness"`] |
+
+ `*` Required fields
 
 ## Supported Devices
 

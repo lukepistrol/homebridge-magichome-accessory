@@ -9,36 +9,41 @@
         "type": "string",
         "title": "Name",
         "description": "Name of the accessory",
-        "default": "MagicHome"
+        "default": "MagicHome",
+        "required": true
       },
       "ip": {
         "type": "string",
         "title": "IP Address",
         "description": "IP Address of the MagicHome device",
-        "default": ""
+        "default": "",
+        "required": true,
+        "format": "ipv4",
+        "placeholder": "192.168.9.50"
       },
       "port": {
-        "type": "number",
+        "type": "integer",
         "title": "Port",
-        "description": "Port of the MagicHome device",
-        "default": 5577
+        "description": "Port of the MagicHome device. Default: 5577",
+        "default": 5577,
+        "required": true
       },
       "connect_timeout": {
-        "type": "number",
+        "type": "integer",
         "title": "Connect Timeout",
-        "description": "Timeout in milliseconds",
+        "description": "Timeout in milliseconds. Default: 1000",
         "default": 1000
       },
       "response_timeout": {
-        "type": "number",
+        "type": "integer",
         "title": "Response Timeout",
-        "description": "Timeout in milliseconds",
+        "description": "Timeout in milliseconds. Default: 500",
         "default": 500
       },
       "command_timeout": {
-        "type": "number",
+        "type": "integer",
         "title": "Command Timeout",
-        "description": "Timeout in milliseconds",
+        "description": "Timeout in milliseconds. Default: 100",
         "default": 100
       },
       "enabled_characteristics": {
@@ -46,6 +51,11 @@
         "title": "Enabled Characteristics",
         "description": "Characteristics to enable",
         "uniqueItems": true,
+        "required": true,
+        "default": [
+          "On",
+          "Brightness"
+        ],
         "items": {
           "type": "string",
           "title": "Characteristic",
