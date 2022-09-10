@@ -17,17 +17,29 @@
         "description": "IP Address of the MagicHome device",
         "default": ""
       },
-      "timeout": {
+      "port": {
         "type": "number",
-        "title": "Timeout",
+        "title": "Port",
+        "description": "Port of the MagicHome device",
+        "default": 5577
+      },
+      "connect_timeout": {
+        "type": "number",
+        "title": "Connect Timeout",
         "description": "Timeout in milliseconds",
         "default": 1000
       },
-      "apply_masks": {
-        "type": "boolean",
-        "title": "Apply Masks",
-        "description": "Apply masks to the color values",
-        "default": false
+      "response_timeout": {
+        "type": "number",
+        "title": "Response Timeout",
+        "description": "Timeout in milliseconds",
+        "default": 500
+      },
+      "command_timeout": {
+        "type": "number",
+        "title": "Command Timeout",
+        "description": "Timeout in milliseconds",
+        "default": 100
       }
     }
   }
