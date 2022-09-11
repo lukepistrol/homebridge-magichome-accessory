@@ -42,3 +42,5 @@ This plugin allows MagicHome single channel devices to be switched on/off and to
 At this time only single channel/color controllers are supported like this one:
 
 ![Single Channel](./.docs/single-channel.jpeg)
+
+For RGB controllers I recommend using [homebridge-magichome2](https://www.npmjs.com/package/homebridge-magichome2).

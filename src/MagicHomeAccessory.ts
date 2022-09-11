@@ -12,7 +12,8 @@ import {
 } from 'homebridge';
 import { MHControl } from './MHControl';
 import './extensions';
-import { ACCESSORY_NAME, MANUFACTURER, VERSION } from './settings';
+import { ACCESSORY_NAME, MANUFACTURER } from './settings';
+import { version as VERSION } from '../package.json';
 
 export class MagicHomeAccessory implements AccessoryPlugin {
   public readonly Service: typeof Service = this.api.hap.Service;
