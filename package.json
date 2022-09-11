@@ -2,7 +2,7 @@
   "private": false,
   "displayName": "MagicHomeAccessory",
   "name": "homebridge-magichome-accessory",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Plugin for Homebridge to control MagicHome devices",
   "license": "Apache-2.0",
   "author": {

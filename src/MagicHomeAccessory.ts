@@ -44,6 +44,11 @@ export class MagicHomeAccessory implements AccessoryPlugin {
 
   identify(): void {
     this.log.info('Identify!');
+    this.MHBrightnessControl.setPower(true).then(() => {
+      delay(500).then(() => {
+        this.MHOnControl.setPower(false);
+      });
+    });
   }
 
   getServices(): Service[] {
@@ -94,7 +99,7 @@ export class MagicHomeAccessory implements AccessoryPlugin {
   setPowerState(value: CharacteristicValue, callback: CharacteristicSetCallback) {
     this.MHOnControl.setPower(value as boolean)
       .then(() => {
-        this.log.debug('Power Set: "' + (value as boolean).onOff() + '"');
+        this.log.info('Power Set: "' + (value as boolean).onOff() + '"');
         callback(null);
       })
       .catch((error) => {
@@ -119,7 +124,7 @@ export class MagicHomeAccessory implements AccessoryPlugin {
   setBrightness(value: CharacteristicValue, callback: CharacteristicSetCallback) {
     this.MHBrightnessControl.sendBrightnessCommand((value as number).convertToColor(255))
       .then(() => {
-        this.log.debug('Brightness Set: "' + value + '%"');
+        this.log.info('Brightness Set: "' + value + '%"');
         callback(null);
       })
       .catch((error) => {

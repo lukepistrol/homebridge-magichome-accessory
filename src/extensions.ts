@@ -25,3 +25,8 @@ interface Boolean {
 Boolean.prototype.onOff = function () {
   return this ? 'On' : 'Off';
 };
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
