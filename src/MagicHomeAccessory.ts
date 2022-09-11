@@ -20,6 +20,9 @@ import { ACCESSORY_NAME, MANUFACTURER } from './settings';
 import { version as VERSION } from '../package.json';
 import './extensions';
 
+/** A class representing the accessory plugin itself.
+ * It implements {@link AccessoryPlugin}.
+ */
 export class MagicHomeAccessory implements AccessoryPlugin {
   public readonly Service: typeof Service = this.api.hap.Service;
   public readonly Characteristic: typeof Characteristic = this.api.hap.Characteristic;
@@ -70,7 +73,7 @@ export class MagicHomeAccessory implements AccessoryPlugin {
    * This method sets up the accessory's services and characteristics.
    * It is called once after the accessory is initialized.
    *
-   * @returns Service
+   * @returns {Service[]} The services of the accessory
    */
   getServices(): Service[] {
     const informationService = new this.Service.AccessoryInformation();
