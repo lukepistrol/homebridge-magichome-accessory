@@ -1,5 +1,11 @@
+/**
+ * ./src/MHControl.ts
+ * @author Lukas Pistrol <lukas@pistrol.com>
+ */
+
 import net = require('net');
 
+/** A structure containing options for the {@link MHControl} */
 type MHControlOptions = {
   host: string;
   port: number;
@@ -8,24 +14,29 @@ type MHControlOptions = {
   command_timeout?: number;
 };
 
-type QueryResponse = {
+/** A structure containing the response of an accessory */
+type MHQueryResponse = {
   on: boolean;
   brightness: number;
 };
 
-type CommandBlock = {
+/** A structure containing a Command and callbacks */
+type MHCommandBlock = {
   command: Buffer;
   resolve: any;
   reject: any;
   expectReply: boolean;
 };
 
+/** A class managing the sending and receiving of data between
+ * plugin and the accessory.
+ */
 export class MHControl {
   private _address: string;
   private _port: number;
   private _socket?: net.Socket;
   private _receivedData: Buffer;
-  private _cmdQueue: CommandBlock[] = [];
+  private _cmdQueue: MHCommandBlock[] = [];
 
   private _connect_timeout: number;
   private _command_timeout: number;
@@ -45,6 +56,15 @@ export class MHControl {
     this._receivedData = Buffer.alloc(0);
   }
 
+  /**
+   * **Receive Data**
+   *
+   * Query the current state of the device
+   *
+   * @param  {boolean} empty
+   * @param  {Buffer} data?
+   * @returns void
+   */
   _receiveData(empty: boolean, data?: Buffer): void {
     if (this._commandTimeout !== undefined) {
       clearTimeout(this._commandTimeout);
@@ -79,6 +99,11 @@ export class MHControl {
     }
   }
 
+  /**
+   * **Handle Command Timeout**
+   *
+   * This method is called when the device does not respond to a command within the specified timeout.
+   */
   _handleCommandTimeout() {
     this._commandTimeout = undefined;
 
@@ -98,6 +123,11 @@ export class MHControl {
     this._handleNextCommand();
   }
 
+  /**
+   * **Handle Next Command**
+   *
+   * This method is called when the device has finished processing the previous command.
+   */
   _handleNextCommand() {
     if (this._cmdQueue.length === 0) {
       if (this._socket !== null) {
@@ -124,6 +154,17 @@ export class MHControl {
     }
   }
 
+  /**
+   * **Send Command**
+   *
+   * This method is called when a command is sent to the device.
+   *
+   * @param  {Buffer} buffer
+   * @param  {boolean} expectReply
+   * @param  {any} resolve
+   * @param  {any} reject
+   * @returns void
+   */
   _sendCommand(buffer: Buffer, expectReply: boolean, resolve: any, reject: any): void {
     let checksum = 0;
     for (const byte of buffer.values()) {
@@ -168,6 +209,14 @@ export class MHControl {
     }
   }
 
+  /**
+   * **Socket Error Handler**
+   *
+   * This method is called when an error occurs on the socket.
+   *
+   * @param  {Error} err
+   * @param  {any} reject
+   */
   _socketErrorHandler(err: Error, reject: any) {
     this._preventDataSending = true;
 
@@ -188,6 +237,15 @@ export class MHControl {
     this._cmdQueue = [];
   }
 
+  /**
+   * **Send Brightness Command**
+   *
+   * This method is called when sending the brightness to the device.
+   *
+   * @param  {number} brightness
+   * @param  {any} callback
+   * @returns {Promise<boolean>} A Promise
+   */
   sendBrightnessCommand(brightness: number, callback?: any): Promise<boolean> {
     const cmd_buf = Buffer.from([0x31, brightness, 0, 0, 0x03, 0x01, 0x0f]);
 
@@ -208,6 +266,15 @@ export class MHControl {
     return promise;
   }
 
+  /**
+   * **Send Power Command**
+   *
+   * This method is called when sending the power state to the device.
+   *
+   * @param  {boolean} on
+   * @param  {any} callback?
+   * @returns {Promise<boolean>} A Promise
+   */
   setPower(on: boolean, callback?: any): Promise<boolean> {
     const cmd_buf = Buffer.from([0x71, on ? 0x23 : 0x24, 0x0f]);
 
@@ -224,7 +291,15 @@ export class MHControl {
     return promise;
   }
 
-  queryState(callback?: any): Promise<QueryResponse> {
+  /**
+   * **Query State**
+   *
+   * This method is called when querying the state of the device.
+   *
+   * @param  {any} callback?
+   * @returns {Promise<boolean>} A Promise
+   */
+  queryState(callback?: any): Promise<MHQueryResponse> {
     const cmd_buf = Buffer.from([0x81, 0x8a, 0x8b]);
 
     const promise = new Promise<any>((resolve, reject) => {
@@ -235,7 +310,7 @@ export class MHControl {
           throw new Error('Invalid response');
         }
 
-        const state: QueryResponse = {
+        const state: MHQueryResponse = {
           on: data.readUInt8(2) === 0x23,
           brightness: data.readUInt8(6),
         };

@@ -1,3 +1,8 @@
+/**
+ * ./src/MagicHomeAccessory.ts
+ * @author Lukas Pistrol <lukas@pistrol.com>
+ */
+
 import {
   AccessoryConfig,
   AccessoryPlugin,
@@ -11,9 +16,9 @@ import {
   Service,
 } from 'homebridge';
 import { MHControl } from './MHControl';
-import './extensions';
 import { ACCESSORY_NAME, MANUFACTURER } from './settings';
 import { version as VERSION } from '../package.json';
+import './extensions';
 
 export class MagicHomeAccessory implements AccessoryPlugin {
   public readonly Service: typeof Service = this.api.hap.Service;
@@ -42,6 +47,14 @@ export class MagicHomeAccessory implements AccessoryPlugin {
     this.log.debug('Configuration: ' + JSON.stringify(configuration));
   }
 
+  /**
+   * **Identify Accessory**
+   *
+   * This method is called when tapping the "identify" button in the Home app during setup.
+   * The accessory will turn on for 0.5 seconds and then turn off.
+   *
+   * @returns void
+   */
   identify(): void {
     this.log.info('Identify!');
     this.MHBrightnessControl.setPower(true).then(() => {
@@ -51,6 +64,14 @@ export class MagicHomeAccessory implements AccessoryPlugin {
     });
   }
 
+  /**
+   * **Get Services**
+   *
+   * This method sets up the accessory's services and characteristics.
+   * It is called once after the accessory is initialized.
+   *
+   * @returns Service
+   */
   getServices(): Service[] {
     const informationService = new this.Service.AccessoryInformation();
 
@@ -83,6 +104,13 @@ export class MagicHomeAccessory implements AccessoryPlugin {
     return [informationService, lightbulbService];
   }
 
+  /**
+   * **Get Power State**
+   *
+   * This method gets the power state of the lightbulb.
+   *
+   * @param  {CharacteristicGetCallback} callback
+   */
   getPowerState(callback: CharacteristicGetCallback) {
     this.MHOnControl.queryState()
       .then((state) => {
@@ -96,6 +124,14 @@ export class MagicHomeAccessory implements AccessoryPlugin {
       });
   }
 
+  /**
+   * **Set Power State**
+   *
+   * This method sets the power state of the lightbulb.
+   *
+   * @param  {CharacteristicValue} value
+   * @param  {CharacteristicSetCallback} callback
+   */
   setPowerState(value: CharacteristicValue, callback: CharacteristicSetCallback) {
     this.MHOnControl.setPower(value as boolean)
       .then(() => {
@@ -108,6 +144,13 @@ export class MagicHomeAccessory implements AccessoryPlugin {
       });
   }
 
+  /**
+   * **Get Brightness**
+   *
+   * This method gets the brightness of the lightbulb.
+   *
+   * @param  {CharacteristicGetCallback} callback
+   */
   getBrightness(callback: CharacteristicGetCallback) {
     this.MHBrightnessControl.queryState()
       .then((state) => {
@@ -121,6 +164,14 @@ export class MagicHomeAccessory implements AccessoryPlugin {
       });
   }
 
+  /**
+   * **Set Brightness**
+   *
+   * This method sets the brightness of the lightbulb.
+   *
+   * @param  {CharacteristicValue} value
+   * @param  {CharacteristicSetCallback} callback
+   */
   setBrightness(value: CharacteristicValue, callback: CharacteristicSetCallback) {
     this.MHBrightnessControl.sendBrightnessCommand((value as number).convertToColor(255))
       .then(() => {

@@ -1,3 +1,8 @@
+/**
+ * ./src/index.ts
+ * @author Lukas Pistrol <lukas@pistrol.com>
+ */
+
 import { API } from 'homebridge';
 
 import { ACCESSORY_NAME } from './settings';
