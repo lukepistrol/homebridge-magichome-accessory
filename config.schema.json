@@ -1,7 +1,7 @@
 {
-  "pluginAlias": "MagicHomeAccessory",
-  "pluginType": "accessory",
-  "singular": false,
+  "pluginAlias": "MagicHomePlatform",
+  "pluginType": "platform",
+  "singular": true,
   "schema": {
     "type": "object",
     "properties": {
@@ -12,58 +12,66 @@
         "default": "MagicHome",
         "required": true
       },
-      "ip": {
-        "type": "string",
-        "title": "IP Address",
-        "description": "IP Address of the MagicHome device",
-        "default": "",
-        "required": true,
-        "format": "ipv4",
-        "placeholder": "192.168.9.50"
-      },
-      "port": {
-        "type": "integer",
-        "title": "Port",
-        "description": "Port of the MagicHome device. Default: 5577",
-        "default": 5577,
-        "required": true
+      "devices": {
+        "type": "array",
+        "title": "Devices",
+        "items": {
+          "type": "object",
+          "title": "Device",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "Name",
+              "description": "Name of the accessory",
+              "default": "MagicHome",
+              "required": true
+            },
+            "ip": {
+              "type": "string",
+              "title": "IP Address",
+              "description": "IP Address of the MagicHome device",
+              "default": "",
+              "required": true,
+              "format": "ipv4",
+              "placeholder": "<IP Address>"
+            },
+            "port": {
+              "type": "integer",
+              "title": "Port",
+              "description": "Port of the MagicHome device. Default: 5577",
+              "default": 5577,
+              "required": true
+            },
+            "dimmable": {
+              "type": "boolean",
+              "title": "Dimmable",
+              "description": "Is the device dimmable?",
+              "default": true,
+              "required": true
+            }
+          }
+        }
       },
       "connect_timeout": {
         "type": "integer",
         "title": "Connect Timeout",
         "description": "Timeout in milliseconds. Default: 1000",
-        "default": 1000
+        "default": 1000,
+        "required": true
       },
       "response_timeout": {
         "type": "integer",
         "title": "Response Timeout",
         "description": "Timeout in milliseconds. Default: 500",
-        "default": 500
+        "default": 500,
+        "required": true
       },
       "command_timeout": {
         "type": "integer",
         "title": "Command Timeout",
         "description": "Timeout in milliseconds. Default: 100",
-        "default": 100
-      },
-      "enabled_characteristics": {
-        "type": "array",
-        "title": "Enabled Characteristics",
-        "description": "Characteristics to enable",
-        "uniqueItems": true,
-        "required": true,
-        "default": [
-          "On",
-          "Brightness"
-        ],
-        "items": {
-          "type": "string",
-          "title": "Characteristic",
-          "enum": [
-            "On",
-            "Brightness"
-          ]
-        }
+        "default": 100,
+        "required": true
       }
     }
   }

@@ -4,6 +4,7 @@
  */
 
 export const ACCESSORY_NAME = 'MagicHomeAccessory';
+export const PLATFORM_NAME = 'MagicHomePlatform';
 
 export const MANUFACTURER = 'MagicHome';
 
