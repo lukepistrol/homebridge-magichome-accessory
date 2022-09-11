@@ -5,37 +5,56 @@ This plugin allows MagicHome single channel devices to be switched on/off and to
 ## Config
 
 ```json
-"accessories": [
-    {
-      "accessory": "MagicHomeAccessory",
-      "name": "LED Strip",
-      "ip": "<The local IP address>",
-      "port": 5577,
-      "connect_timeout": 1000,
-      "response_timeout": 500,
-      "command_timeout": 100,
-      "enabled_characteristics": [
-        "On",
-        "Brightness"
-      ],
-    },
+"platforms": [
+  {
+    "name": "MagicHome",
+    "devices": [
+      {
+        "name": "Kitchen Light",
+        "ip": "192.168.0.54",
+        "port": 5577,
+        "dimmable": true
+      },
+      {
+        "name": "Bedroom Light",
+        "ip": "192.168.0.62",
+        "port": 5577,
+        "dimmable": false
+      }
+    ],
+    "connect_timeout": 1000,
+    "response_timeout": 500,
+    "command_timeout": 100,
+    "platform": "MagicHomePlatform"
+  }
 ],
 ```
 
 ### Properties
 
+### Platform
+
 | Property                   | Description                                                                               | Default Value            |
 | -------------------------- | ----------------------------------------------------------------------------------------- | ------------------------ |
-| accessory *                | The plugins's name.                                                                       | `"MagicHomeAccessory"`   |
-| name *                     | The readable name of the acessory.                                                        | `"MagicHome"`            |
-| ip *                       | The local IP address (eg.: `192.168.0.48`).                                               | _empty_                  |
-| port *                     | The port. This is usually `5577`.                                                         | `5577`                   |
+| platform *                 | The platform's name. This must not be changed!                                            | `"MagicHomePlatform"`    |
+| name *                     | The name of the platform.                                                                 | `"MagicHome"`            |
+| devices                    | An array of devices.                                                                      | empty                    |
 | connect_timeout            | The time in `ms` after which the connection is beeing aborted without data sent/received. | `1000`                   |
 | response_timeout           | The time in `ms` to wait for a response from the device.                                  | `500`                    |
 | command_timeout            | The time in `ms` until a command is invalid.                                              | `100`                    |
-| eneabled_characteristics * | Array of enabled characteristics for the device. (`"On"`\|`"Brightness"`)                 | [`"On"`, `"Brightness"`] |
 
- `*` Required fields
+`*` Required fields
+
+### Devices
+
+| Property   | Description                                                    | Default Value |
+| ---------- | -------------------------------------------------------------- | ------------- |
+| name *     | The name of the device that will be displayed in the Home app. | `""`          |
+| ip *       | The IP addess of the device. (eg. "192.168.0.54")              | `empty`       |
+| port *     | The port. Only change this if your device uses another port.   | `5577`        |
+| dimmable * | Let the device be dimmable or only use an On/Off switch.       | `true`        |
+
+`*` Required fields
 
 ## Supported Devices
 

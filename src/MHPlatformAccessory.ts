@@ -19,7 +19,6 @@ import './extensions';
  * This is the accessory class that is used to create the accessory in homebridge.
  */
 export class MHPlatformAccessory {
-
   private service: Service;
 
   private MHOnControl: MHControl;
@@ -49,7 +48,8 @@ export class MHPlatformAccessory {
     this.MHBrightnessControl = new MHControl(configuration);
 
     // set accessory information
-    this.accessory.getService(this.platform.Service.AccessoryInformation)!
+    this.accessory
+      .getService(this.platform.Service.AccessoryInformation)!
       .setCharacteristic(this.platform.Characteristic.Manufacturer, MANUFACTURER)
       .setCharacteristic(this.platform.Characteristic.Model, ACCESSORY_NAME)
       .setCharacteristic(this.platform.Characteristic.SerialNumber, this.device.ip)
@@ -57,19 +57,23 @@ export class MHPlatformAccessory {
       .setCharacteristic(this.platform.Characteristic.Identify, true);
 
     // get the LightBulb service if it exists, otherwise create a new LightBulb service
-    this.service = this.accessory.getService(this.platform.Service.Lightbulb) || this.accessory.addService(this.platform.Service.Lightbulb);
+    this.service =
+      this.accessory.getService(this.platform.Service.Lightbulb) ||
+      this.accessory.addService(this.platform.Service.Lightbulb);
 
     // set the service name, this is what is displayed as the default name on the Home app
     this.service.setCharacteristic(this.platform.Characteristic.Name, this.device.name);
 
     // register handlers for the On/Off Characteristic
-    this.service.getCharacteristic(this.platform.Characteristic.On)
+    this.service
+      .getCharacteristic(this.platform.Characteristic.On)
       .on('get', this.getPowerState.bind(this))
       .on('set', this.setPowerState.bind(this));
 
     // register handlers for the Brightness Characteristic if the device is dimmable
     if (this.device.dimmable) {
-      this.service.getCharacteristic(this.platform.Characteristic.Brightness)
+      this.service
+        .getCharacteristic(this.platform.Characteristic.Brightness)
         .on('get', this.getBrightness.bind(this))
         .on('set', this.setBrightness.bind(this));
     }

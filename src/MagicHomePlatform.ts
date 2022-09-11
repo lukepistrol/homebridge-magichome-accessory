@@ -1,4 +1,12 @@
-import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from 'homebridge';
+import {
+  API,
+  DynamicPlatformPlugin,
+  Logger,
+  PlatformAccessory,
+  PlatformConfig,
+  Service,
+  Characteristic,
+} from 'homebridge';
 
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
 import { MHPlatformAccessory } from './MHPlatformAccessory';
@@ -16,17 +24,12 @@ export type Device = {
 };
 
 export class MagicHomePlatform implements DynamicPlatformPlugin {
-
   public readonly Service: typeof Service = this.api.hap.Service;
   public readonly Characteristic: typeof Characteristic = this.api.hap.Characteristic;
 
   public readonly accessories: PlatformAccessory[] = [];
 
-  constructor(
-    public readonly log: Logger,
-    public readonly config: PlatformConfig,
-    public readonly api: API,
-  ) {
+  constructor(public readonly log: Logger, public readonly config: PlatformConfig, public readonly api: API) {
     this.log = log;
     this.config = config;
     this.api = api;
@@ -62,7 +65,7 @@ export class MagicHomePlatform implements DynamicPlatformPlugin {
 
       const uuid = this.api.hap.uuid.generate(device.ip);
 
-      const existingAccessory = this.accessories.find(accessory => accessory.UUID === uuid);
+      const existingAccessory = this.accessories.find((accessory) => accessory.UUID === uuid);
 
       if (existingAccessory) {
         if (!isEqual(existingAccessory.context.device, device)) {
@@ -90,5 +93,4 @@ export class MagicHomePlatform implements DynamicPlatformPlugin {
 
     this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
   }
-
 }
