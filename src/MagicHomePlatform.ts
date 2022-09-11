@@ -1,3 +1,8 @@
+/**
+ * ./src/MagicHomePlatform.ts
+ * @author Lukas Pistrol <lukas@pistrol.com>
+ */
+
 import {
   API,
   DynamicPlatformPlugin,

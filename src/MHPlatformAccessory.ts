@@ -1,3 +1,8 @@
+/**
+ * ./src/MHPlatformAccessory.ts
+ * @author Lukas Pistrol <lukas@pistrol.com>
+ */
+
 import {
   Service,
   PlatformAccessory,
