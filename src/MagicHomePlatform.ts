@@ -16,8 +16,6 @@ import {
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
 import { MHPlatformAccessory } from './MHPlatformAccessory';
 
-const l = require('lodash');
-
 /**
  * This is a type for the device configuration.
  */
@@ -27,6 +25,10 @@ export type Device = {
   port: number;
   dimmable: boolean;
 };
+
+function isEqual(a: Device, b: Device): boolean {
+  return a.ip === b.ip && a.port === b.port && a.name === b.name && a.dimmable === b.dimmable;
+}
 
 export class MagicHomePlatform implements DynamicPlatformPlugin {
   public readonly Service: typeof Service = this.api.hap.Service;
@@ -73,7 +75,7 @@ export class MagicHomePlatform implements DynamicPlatformPlugin {
       const existingAccessory = this.accessories.find((accessory) => accessory.UUID === uuid);
 
       if (existingAccessory) {
-        if (!l.isEqual(existingAccessory.context.device, device)) {
+        if (!isEqual(existingAccessory.context.device, device)) {
           this.log.warn('Device configuration changed, updating accessory', existingAccessory.displayName);
           this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [existingAccessory]);
           this._addDevice(device, uuid);

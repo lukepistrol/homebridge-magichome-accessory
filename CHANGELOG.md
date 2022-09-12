@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2
+
+* removed unneeded dependencies
+
 ## 1.0.1
 
 * Fixed import exception
