@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3
+
+* fixed `callback is not a function` error
+
 ## 1.0.2
 
 * removed unneeded dependencies

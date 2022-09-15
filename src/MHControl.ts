@@ -260,7 +260,7 @@ export class MHControl {
       });
 
     if (callback && typeof callback === 'function') {
-      promise.then(callback.bind(null, null), callback);
+      promise.then(callback.bind(null, null), callback());
     }
 
     return promise;
@@ -285,7 +285,7 @@ export class MHControl {
     });
 
     if (callback && typeof callback === 'function') {
-      promise.then(callback.bind(null, null), callback);
+      promise.then(callback.bind(null, null), callback());
     }
 
     return promise;
@@ -323,7 +323,7 @@ export class MHControl {
       });
 
     if (callback && typeof callback === 'function') {
-      promise.then(callback.bind(null, null), callback);
+      promise.then(callback.bind(null, null), callback());
     }
 
     return promise;
